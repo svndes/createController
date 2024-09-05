@@ -1,5 +1,5 @@
 import os
-import json
+import maya.mel as mel
 import maya.cmds as cmds
 import maya.OpenMayaUI as omui
 from shiboken2 import wrapInstance
@@ -12,7 +12,7 @@ class CreateControllerUI(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(CreateControllerUI, self).__init__(parent)
         self.setWindowTitle("Create Controller")
-        self.setFixedSize(356, 250)
+        self.setFixedSize(480, 350)
         self.setWindowFlags(self.windowFlags() ^ QtCore.Qt.WindowContextHelpButtonHint)
 
         main_layout = QtWidgets.QVBoxLayout(self)
@@ -38,11 +38,10 @@ class CreateControllerUI(QtWidgets.QDialog):
         scroll_area.setWidget(self.scroll_widget)
         self.grid_layout = QtWidgets.QGridLayout(self.scroll_widget)
 
-        button_size = 50
+        button_size = 70
         self.shape_folder = os.path.join(spath, 'icons')
         self.shape_files = [f for f in os.listdir(self.shape_folder) if f.endswith('.png')]
         self.button_icon_map = {}
-        print(self.shape_files)
 
         for i, shape_file in enumerate(self.shape_files):
             button = QtWidgets.QPushButton()
@@ -54,7 +53,6 @@ class CreateControllerUI(QtWidgets.QDialog):
             self.grid_layout.addWidget(button, row, col)
             self.button_icon_map[button] = shape_file
             button.clicked.connect(self.button_clicked)
-            print(icon_path)
 
         self.change_shape_radio.toggled.connect(self.toggle_combo_lock)
 
@@ -147,19 +145,19 @@ class CreateControllerUI(QtWidgets.QDialog):
     def create_curve(self):
         """Create a curve based on the selected button's icon."""
         sender = self.sender()
-        clicked_icon = self.button_icon_map[sender]
-        json_name = clicked_icon.replace('.png', '.json')
-        json_path = os.path.join(f'{spath}/shapes', json_name)
+        clicked_icon = self.button_icon_map.get(sender)
 
-        if os.path.exists(json_path):
-            try:
-                with open(json_path, "r") as file:
-                    data = json.load(file)
-                point_list = data.get("pointList", [])
-                if point_list:
-                    return cmds.curve(point=point_list, d=1)
-            except Exception as e:
-                print(f"Failed to create curve from {json_name}: {e}")
+        if clicked_icon:
+            shapeName = clicked_icon.replace('.png', '.mel')
+            shapePath = os.path.join(f'{spath}/shapes/', shapeName)
+            name = shapeName.split(".")[0]
+            if os.path.exists(shapePath):
+                trans = cmds.createNode('transform', name=name)
+                mel.eval(f'source "{shapePath}";')
+                return trans
+            else:
+                print(f"Shape file not found: {shapePath}")
+        return None
 
     def change_curve(self):
         """Replace selected controllers with new curves."""
@@ -197,5 +195,3 @@ def launchUI():
     CreateControllerUI.window.setObjectName("CreateControllerUI")  # code above uses this to ID any existing windows
     CreateControllerUI.window.setWindowTitle('Create Controller')
     CreateControllerUI.window.show()
-
-
