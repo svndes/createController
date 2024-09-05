@@ -1,5 +1,5 @@
 # Create Controllers
-Welcome to the Maya Custom Controller UI script! This tool simplifies your rigging workflow with an intuitive interface for creating and modifying control curves in Autodesk Maya.
+Welcome to the Maya Custom Controller UI script! This tool simplifies your rigging workflow with an intuitive interface for creating and modifying control curves in Autodesk Maya 2022, 2023, 2024, 2025.
 
 ### Features<br/>
 Only Ctrl: Quickly create and parent controllers to your selected objects.<br/>
