@@ -13,7 +13,7 @@ class CreateControllerUI(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(CreateControllerUI, self).__init__(parent)
         self.setWindowTitle("Create Controller")
-        self.setFixedSize(480, 350)
+        self.setFixedSize(356, 250)
         self.setWindowFlags(self.windowFlags() ^ QtCore.Qt.WindowContextHelpButtonHint)
 
         mainLayout = QtWidgets.QVBoxLayout(self)
@@ -39,7 +39,7 @@ class CreateControllerUI(QtWidgets.QDialog):
         scrollArea.setWidget(self.scrollWidget)
         self.gridLayout = QtWidgets.QGridLayout(self.scrollWidget)
 
-        buttonSize = 70
+        buttonSize = 50
         self.shapeFolder = os.path.join(spath, 'icons')
         self.shapeFiles = [f for f in os.listdir(self.shapeFolder) if f.endswith('.png')]
         self.buttonIconMap = {}
