@@ -14,7 +14,7 @@ Change Shape: Need a different look? Swap out the shape of existing controllers 
 
 ### Installation
 Download the Script.<br/>
-Save the script file to Maya's default "scripts" folder.<br/>
+copy createController the script folder to Maya's default "scripts" folder.<br/>
 
     Windows: Documents/maya/scripts
     macOS: ~/Library/Preferences/Autodesk/maya/scripts
